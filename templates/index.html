@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Emotion Based Interaction</title>
+        <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        img {
+            max-width: 100px;
+            margin: 20px;
+        }
+        #response {
+            margin: 20px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        #speakButton {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div id="response">{{ response }}</div>
+
+    <button id="speakButton" onclick="startRecording()">Speak</button>
+
+    <div>
+        {% if final_emotion == 'angry' %}
+            <img src="{{ url_for('static', filename='angry.png') }}" alt="Angry">
+        {% elif final_emotion == 'disgust' %}
+            <img src="{{ url_for('static', filename='disgust.png') }}" alt="Disgust">
+        {% elif final_emotion == 'fear' %}
+            <img src="{{ url_for('static', filename='fear.png') }}" alt="Fear">
+        {% elif final_emotion == 'happy' %}
+            <img src="{{ url_for('static', filename='happy.png') }}" alt="Happy">
+        {% elif final_emotion == 'sad' %}
+            <img src="{{ url_for('static', filename='sad.png') }}" alt="Sad">
+        {% elif final_emotion == 'neutral' %}
+            <img src="{{ url_for('static', filename='neutral.png') }}" alt="Neutral">
+        {% elif final_emotion == 'surprise' %}
+            <img src="{{ url_for('static', filename='surprise.png') }}" alt="Surprise">
+        {% endif %}
+    </div>
+
+    <script>
+    function startRecording() {
+        // Send an AJAX request to your Flask server to handle speech recognition
+        fetch('/record', {
+            method: 'POST'
+        })
+        .then(response => response.text())
+        .then(response => {
+            // Update the response div with the generated response
+            document.getElementById('response').innerHTML = response;
+        });
+    }
+    </script>
+</body>
+</html>
